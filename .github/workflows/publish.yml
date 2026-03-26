@@ -1,0 +1,55 @@
+name: Publish VS Code Extension
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Extension
+        run: npm run build
+
+      - name: Package Extension
+        id: package
+        run: |
+          npx @vscode/vsce package --no-dependencies --allow-star-activation
+          VSIX_NAME=$(ls *.vsix | head -n 1)
+          echo "vsix_name=$VSIX_NAME" >> $GITHUB_OUTPUT
+          echo "vsix_path=./$VSIX_NAME" >> $GITHUB_OUTPUT
+
+      - name: Publish to VS Code Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: npx @vscode/vsce publish --no-dependencies --allow-star-activation --packagePath ${{ steps.package.outputs.vsix_path }} --pat $VSCE_PAT
+        continue-on-error: true
+
+      - name: Publish to Open VSX Registry
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.OVSX_PAT }}
+          registryUrl: https://open-vsx.org
+          extensionFile: ${{ steps.package.outputs.vsix_path }}
+        continue-on-error: true
+
+      - name: Upload VSIX as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.vsix_name }}
+          path: ${{ steps.package.outputs.vsix_path }}
+          retention-days: 30

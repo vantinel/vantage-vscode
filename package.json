@@ -1,0 +1,141 @@
+{
+  "name": "vantinel-vscode",
+  "displayName": "Vantinel",
+  "description": "Real-Time AI Agent Observability & Guardrails Platform",
+  "version": "0.1.11",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vantinel.showDashboard",
+        "title": "Vantinel: Show Dashboard"
+      },
+      {
+        "command": "vantinel.setApiKey",
+        "title": "Vantinel: Set API Key"
+      },
+      {
+        "command": "vantinel.setProjectId",
+        "title": "Vantinel: Set Project ID"
+      },
+      {
+        "command": "vantinel.setupWizard",
+        "title": "Vantinel: Configuration Wizard"
+      },
+      {
+        "command": "vantinel.enableProxy",
+        "title": "Vantinel: Enable Proxy"
+      },
+      {
+        "command": "vantinel.disableProxy",
+        "title": "Vantinel: Disable Proxy"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vantinel-explorer",
+          "title": "Vantinel",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "vantinel-explorer": [
+        {
+          "id": "vantinel-sessions",
+          "name": "Active Sessions",
+          "icon": "resources/icon.svg"
+        },
+        {
+          "id": "vantinel-alerts",
+          "name": "Alerts",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Vantinel",
+      "properties": {
+        "vantinel.collectorUrl": {
+          "type": "string",
+          "default": "http://localhost:8000",
+          "description": "Vantinel Collector URL"
+        },
+        "vantinel.projectId": {
+          "type": "string",
+          "default": "",
+          "description": "Vantinel Project ID (UUID)"
+        },
+        "vantinel.telemetrySamplingRate": {
+          "type": "number",
+          "default": 1,
+          "description": "Telemetry sampling rate (0.0 to 1.0)"
+        },
+        "vantinel.proxyEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the Vantinel local proxy to intercept IDE AI agent requests"
+        },
+        "vantinel.proxyPort": {
+          "type": "number",
+          "default": 3099,
+          "description": "Local port for the Vantinel proxy server (default: 3099)"
+        },
+        "vantinel.agentName": {
+          "type": "string",
+          "default": "vscode-ai-agent",
+          "description": "Agent name reported to Vantinel for sessions originating from this IDE"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "test": "npm run build:test && node ./out/test/runTest.js",
+    "build:test": "tsc -p tsconfig.json",
+    "vscode:prepublish": "npm run build",
+    "package": "npx @vscode/vsce package"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^5.2.3",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^25.3.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/sinon": "^21.0.0",
+    "@types/vscode": "^1.100.0",
+    "@vscode/test-electron": "^2.5.2",
+    "chai": "^4.5.0",
+    "esbuild": "^0.27.3",
+    "glob": "^13.0.6",
+    "mocha": "^11.7.5",
+    "sinon": "^21.0.1",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "lucide-react": "^1.6.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "publisher": "vantinel",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vantinel/vantage-vscode"
+  },
+  "icon": "resources/icon.png"
+}

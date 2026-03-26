@@ -1,0 +1,10 @@
+# VSCode test binaries (downloaded at test time)
+.vscode-test/
+
+# Extension artifacts
+*.vsix
+node_modules/
+dist/
+out/
+.DS_Store
+*.log
