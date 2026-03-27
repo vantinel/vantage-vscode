@@ -7,6 +7,8 @@
     "vscode": "^1.100.0"
   },
   "categories": [
+    "Machine Learning",
+    "Debuggers",
     "Other"
   ],
   "activationEvents": [
@@ -107,9 +109,9 @@
     "vscode:prepublish": "npm run build",
     "package": "npx @vscode/vsce package"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["ai", "agents", "observability", "guardrails", "llm", "mcp", "cursor", "windsurf"],
+  "author": "Vantinel Systems",
+  "license": "MIT",
   "devDependencies": {
     "@types/chai": "^5.2.3",
     "@types/glob": "^8.1.0",
